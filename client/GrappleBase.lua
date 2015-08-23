@@ -26,7 +26,6 @@ if ticks < 75 then return end -- prevent spam
 		if ray.distance > range or ray.distance < 83.5 then return end -- if unobstructed ray (no hit) and longer than normal
 		local state = LocalPlayer:GetBaseState()
 		if state ~= 6 and state ~= 12 and state ~= 19 and state ~= 7 and state ~= 9 then return end -- state limitation
-		--
 		if tracer == nil then
 			objectargs.position = LocalPlayer:GetPosition() + (Camera:GetAngle() * (Vector3.Forward * 25))
 			objectargs.angle = Angle()
@@ -57,18 +56,16 @@ if ticks < 75 then return end -- prevent spam
 end
 
 function cGrapple:OnTick()
-	if LocalPlayer:GetBaseState() ~= 208 then
-		if timer then
-			if timer:GetSeconds() > 2.0 then
-				dowork = false
-				for k,v in pairs(interpolationtable) do interpolationtable[k] = nil end
-				timer = nil
-				if IsValid(tracer) then
-					tracer:Remove()
-					tracer = nil
-				end
-				Events:Unsubscribe(event)
+	if LocalPlayer:GetBaseState() ~= 208 and timer then
+		if timer:GetSeconds() > 2.0 then
+			dowork = false
+			for k,v in pairs(interpolationtable) do interpolationtable[k] = nil end
+			timer = nil
+			if IsValid(tracer) then
+				tracer:Remove()
+				tracer = nil
 			end
+			Events:Unsubscribe(event)
 		end
 	end	
 	if dowork == true then
